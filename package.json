@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "@types/express": "^5.0.6",
+    "axios": "^1.13.2",
+    "express": "^5.2.1",
+    "jose": "^6.1.3",
+    "safe-stable-stringify": "^2.5.0",
+    "tweetnacl": "^1.0.3"
+  },
+  "name": "ledger-payment-test",
+  "version": "1.0.0",
+  "description": "ledger payment para facilidad de uso de ledger api y minka cli",
+  "authors": [
+    {
+      "name": "jonathan rodriguez",
+      "email": "jmrodriguez@soaint.com"
+    }
+  ],
+  "scripts": {
+    "dev": "node --env-file=.env server.js",
+    "test": "node test.js",
+    "start": "node --env-file=.env server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
