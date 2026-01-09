@@ -1,0 +1,196 @@
+# Minka Ledger -- Guía de Inicio y Validación de API
+
+## 1. Introducción
+
+Este documento describe **los pasos previos oficiales necesarios para
+interactuar con la API de Minka Ledger**, tomados y adaptados
+directamente de la documentación *Getting Started* de Minka Ledger.
+
+El objetivo es: - Preparar correctamente el entorno - Entender cómo
+funciona la conexión al ledger - Comprender el uso de llaves y firmas -
+Crear los signers necesarios - Utilizar posteriormente los endpoints de
+prueba de Anchors e Intents implementados en este proyecto
+
+Este README **no inventa flujos**: documenta únicamente lo que Minka
+define como prerequisito oficial, y luego explica cómo esos
+prerequisitos se usan en la implementación.
+
+------------------------------------------------------------------------
+
+## 2. Conexión al Servidor (Server Connection)
+
+Antes de interactuar con cualquier API del Ledger, es obligatorio
+conectarse a un servidor de Minka Ledger.
+
+Según la documentación oficial, esta conexión se realiza utilizando la
+**CLI de Minka**.
+
+### Instalación de la CLI
+
+``` bash
+npm install -g @minka/cli
+```
+
+### Conexión al servidor
+
+``` bash
+minka server connect
+```
+
+Durante el proceso se solicita:
+
+-   URL del servidor Ledger
+-   Ambiente (por ejemplo: dev, sandbox o production)
+
+Si la conexión es exitosa, la CLI confirmará que el servidor quedó
+configurado localmente.
+
+Este paso es obligatorio antes de crear ledgers, signers o enviar
+transacciones.
+
+Referencia oficial:
+https://docs.minka.io/ledger/tutorials/getting-started/server-connection/
+
+------------------------------------------------------------------------
+
+## 3. Llaves y Firmas (Keys and Signatures)
+
+Minka Ledger utiliza **criptografía de clave pública** para autorizar
+todas las operaciones.
+
+Conceptos clave según la documentación:
+
+-   Cada operación enviada al ledger debe estar **firmada**
+-   La firma se realiza con una **llave privada**
+-   El ledger valida la firma usando la **llave pública**
+-   La llave privada **nunca** debe compartirse
+
+Las firmas garantizan: - Autenticidad del emisor - Integridad del
+mensaje
+
+Este modelo es obligatorio para: - Crear Anchors - 
+Modificar o deshabilitar registros
+
+Referencia oficial:
+https://docs.minka.io/ledger/tutorials/getting-started/keys-and-signatures/
+
+------------------------------------------------------------------------
+
+## 4. Creación de Signers (User Creation)
+
+En Minka Ledger no existen "usuarios" tradicionales. El control de
+acceso se realiza mediante **signers**.
+
+Un signer representa una identidad criptográfica que puede firmar
+transacciones.
+
+### Crear un signer usando la CLI
+
+``` bash
+minka signer create
+```
+
+Durante el proceso: - Se asigna un handle al signer - Se genera un par
+de llaves (public / secret) - Opcionalmente se almacena la llave pública
+en el ledger pero no se debe hacer, en este caso le pones un no
+
+El resultado es un signer listo para firmar operaciones.
+
+Este signer es el equivalente funcional al "usuario" que interactúa con
+la API.
+
+``` bash
+minka signer show 'handle' -s
+
+```
+
+Referencia oficial:
+https://docs.minka.io/ledger/tutorials/getting-started/creating-a-signer/
+
+------------------------------------------------------------------------
+
+## 5. Uso de los prerequisitos en este proyecto
+
+Una vez completados los pasos anteriores:
+
+1.  Se configura el archivo `.env` con:
+    -   `LEDGER_SERVER_URL`
+    -   `LEDGER_HANDLE`
+2.  Se utiliza un signer para:
+    -   Derivar la llave pública
+    -   Firmar cada payload
+3.  Cada request al ledger:
+    -   Construye el payload
+    -   Firma la transacción
+    -   Envía el request con JWT y headers requeridos
+
+Este flujo respeta exactamente el modelo definido por Minka Ledger.
+
+------------------------------------------------------------------------
+
+## 6. TEST_MODE
+
+Este proyecto incluye un modo de prueba controlado:
+
+    TEST_MODE=true
+
+Cuando está activo: - No se envían transacciones reales al ledger - No
+se crean Anchors ni Intents - Se devuelve el payload firmado como
+evidencia
+
+Este modo permite: - Validación técnica - QA - Revisión documental -
+Demostraciones sin afectar el ledger
+
+------------------------------------------------------------------------
+
+## 7. Endpoints de Prueba Implementados
+
+### Anchors
+
+    GET    /anchors/tests/anchors
+    GET    /anchors/tests/anchors/:handle
+    POST   /anchors/tests/qr/static/merchant
+    POST   /anchors/tests/qr/dynamic/invoice
+    POST   /anchors/tests/qr/full
+    POST   /anchors/tests/dynamic-key/basic
+    POST   /anchors/tests/dynamic-key/custom-handle
+    PUT    /anchors/tests/anchors/:handle/disable
+
+### Intents
+
+    GET    /intents/tests/intents
+    GET    /intents/tests/intents/:handle
+    POST   /intents/tests/payment/basic
+    POST   /intents/tests/payment/with-metadata
+    POST   /intents/tests/payment/multi-claim
+    POST   /intents/tests/payment/dynamic
+
+Cada endpoint demuestra el uso correcto de: - Firma - Autorización -
+Estructura de payload - Interacción con el Ledger
+
+------------------------------------------------------------------------
+
+## 8. Referencias Oficiales
+
+Toda la información de prerequisitos está basada en la documentación
+oficial de Minka:
+
+-   Server Connection\
+    https://docs.minka.io/ledger/tutorials/getting-started/server-connection/
+
+-   Keys and Signatures\
+    https://docs.minka.io/ledger/tutorials/getting-started/keys-and-signatures/
+
+-   Creating a Signer\
+    https://docs.minka.io/ledger/tutorials/getting-started/creating-a-signer/
+
+------------------------------------------------------------------------
+
+## 9. Conclusión
+
+Este README documenta **únicamente los pasos reales y obligatorios
+definidos por Minka Ledger** para poder interactuar con su API, y cómo
+dichos pasos se reflejan en la implementación de este proyecto.
+
+Sirve como: - Guía de inicio - Documento de soporte técnico - Evidencia
+de cumplimiento de prerequisitos
