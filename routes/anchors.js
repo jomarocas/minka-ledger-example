@@ -21,9 +21,9 @@ function testResponse(res, scenario, payload) {
   });
 }
 
-/* ===========
+/* 
    INFRAESTRUCTURA
-   =========== */
+    */
 
 router.get("/tests/anchors", async (req, res) => {
   try {
@@ -45,9 +45,9 @@ router.get("/tests/anchors/:id", async (req, res) => {
   }
 });
 
-/* ===========
+/* 
    QR CODES
-   =========== */
+    */
 
 /**
  * Caso 1: QR estático comercio físico
@@ -176,9 +176,9 @@ router.post("/tests/qr/full", async (req, res) => {
   }
 });
 
-/* ===========
+/* 
    LLAVES DINÁMICAS
-   =========== */
+    */
 
 router.post("/tests/dynamic-key/basic", async (req, res) => {
   const data = {
@@ -241,9 +241,9 @@ router.post("/tests/dynamic-key/custom-handle", async (req, res) => {
   }
 });
 
-/* ===========
+/* 
    CICLO DE VIDA
-   =========== */
+    */
 
 router.put("/tests/anchors/:handle/disable", async (req, res) => {
   try {

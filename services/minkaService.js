@@ -33,9 +33,9 @@ async function minkaRequest({ method, resource, id, payload, token }) {
   return response.data;
 }
 
-/* =========================
+/* 
    ANCHORS
-   ========================= */
+    */
 
 async function createAnchor(payload, token) {
   return minkaRequest({
@@ -77,9 +77,9 @@ async function disableAnchor(anchorResponse, token) {
   });
 }
 
-/* =========================
+/* 
    INTENTS
-   ========================= */
+    */
 
 async function createIntent(payload, token) {
   return minkaRequest({
@@ -102,11 +102,9 @@ async function getIntent(id, token) {
 module.exports = {
   /* core */
   minkaRequest,
-
   /* intents */
   createIntent,
   getIntent,
-
   /* anchors */
   createAnchor,
   getAnchor,

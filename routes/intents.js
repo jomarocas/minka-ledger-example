@@ -23,9 +23,9 @@ function testResponse(res, scenario, payload) {
   });
 }
 
-/* =====================================================
+/* 
    INTENTS
-   ===================================================== */
+    */
 
 // Listar intents
 router.get("/tests/intents", async (req, res) => {
@@ -53,9 +53,9 @@ router.get("/tests/intents/:handle", async (req, res) => {
   }
 });
 
-/* =====================================================
+/* 
    ESCENARIOS DE PAGO
-   ===================================================== */
+    */
 
 /**
  * Caso 1: Intent de pago básico (transferencia simple)
