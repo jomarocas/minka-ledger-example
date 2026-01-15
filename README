@@ -149,6 +149,7 @@ Demostraciones sin afectar el ledger
 
     GET    /anchors/tests/anchors
     GET    /anchors/tests/anchors/:handle
+    POST   /anchors/tests/anchor
     POST   /anchors/tests/qr/static/merchant
     POST   /anchors/tests/qr/dynamic/invoice
     POST   /anchors/tests/qr/full
