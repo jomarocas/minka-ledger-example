@@ -45,6 +45,42 @@ router.get("/tests/anchors/:id", async (req, res) => {
   }
 });
 
+/** 
+ * test anchors
+*/
+
+router.post("/tests/anchor", async (req, res) => {
+  const data = {
+      "handle": `custom-${Date.now()}`,
+      "target": "svgs:99672643@alianza.com.co",
+      "symbol": "cop",
+      "schema": "business",
+      "custom": {
+        "lastName": "Alba",
+        "aliasType": "merchcode",
+        "name": "Ester",
+        "secondName": "María",
+        "documentType": "cc",
+        "documentNumber": "4107292192",
+        "secondLastName": "Caraballo",
+        "routingCode": "TFY",
+        "participantCode": "2310",
+        "targetSpbviCode": "SVGS",
+        "directory": "centralized"
+      }
+  };
+
+  const signed = buildSignedTransaction(data);
+  if (TEST_MODE) return testResponse(res, "QR_STATIC_MERCHANT", signed);
+
+  try {
+    const token = await generateToken();
+    res.json(await minka.createAnchor(signed, token));
+  } catch (e) {
+    res.status(500).json(e.response?.data || e.message);
+  }
+});
+
 /* 
    QR CODES
     */
